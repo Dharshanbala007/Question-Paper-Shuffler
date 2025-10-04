@@ -127,47 +127,60 @@ class QuestionPaperShuffler {
     handleQuestionSubmit() {
     const lesson = document.getElementById('lesson').value;
     const marks = parseInt(document.getElementById('marks').value);
-    const questionText = document.getElementById('questionText').value.trim();
+    const questionText = document.getElementById('questionText').value;
 
-    if (!lesson || !marks || !questionText) {
+    if (!lesson || !marks || !questionText.trim()) {
         alert('Please fill in all fields');
         return;
     }
 
     if (this.currentEditId) {
-        // Update existing question
+        // Update existing question (editing mode)
         const questionIndex = this.questions.findIndex(q => q.id === this.currentEditId);
         if (questionIndex !== -1) {
             this.questions[questionIndex] = {
                 id: this.currentEditId,
-                question: questionText.split('\n')[0].trim(), // Take first line only for editing
+                question: questionText.trim(),
                 lesson: lesson,
                 marks: marks
             };
         }
         this.cancelEdit();
+        this.clearForm();
+        this.updateUI();
+        this.showSuccessMessage('Question updated successfully!');
     } else {
-        // Add multiple questions (split by new lines)
-        const questionList = questionText.split('\n')
-            .map(q => q.trim())
-            .filter(q => q.length > 0);
+        // Add multiple questions (bulk mode)
+        const questionLines = questionText.split(/\r?\n/);
+        const validQuestions = [];
+        
+        questionLines.forEach(line => {
+            const cleanQuestion = line.trim();
+            if (cleanQuestion && cleanQuestion.length > 0) {
+                validQuestions.push(cleanQuestion);
+            }
+        });
 
-        questionList.forEach(q => {
+        if (validQuestions.length === 0) {
+            alert('Please enter at least one valid question');
+            return;
+        }
+
+        // Add each question
+        validQuestions.forEach(questionLine => {
             const newQuestion = {
                 id: this.nextId++,
-                question: q,
+                question: questionLine,
                 lesson: lesson,
                 marks: marks
             };
             this.questions.push(newQuestion);
         });
-    }
 
-    this.clearForm();
-    this.updateUI();
-    
-    const count = this.currentEditId ? 1 : questionText.split('\n').filter(q => q.trim().length > 0).length;
-    this.showSuccessMessage(`${count} question(s) added successfully!`);
+        this.clearForm();
+        this.updateUI();
+        this.showSuccessMessage(`${validQuestions.length} question(s) added successfully!`);
+    }
 }
 
     addNewLesson() {
