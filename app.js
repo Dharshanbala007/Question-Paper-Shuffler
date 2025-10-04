@@ -124,64 +124,33 @@ class QuestionPaperShuffler {
         });
     }
 
-    handleQuestionSubmit() {
+   handleQuestionSubmit() {
     const lesson = document.getElementById('lesson').value;
     const marks = parseInt(document.getElementById('marks').value);
     const questionText = document.getElementById('questionText').value;
 
-    if (!lesson || !marks || !questionText.trim()) {
+    if (!lesson || !marks || !questionText) {
         alert('Please fill in all fields');
         return;
     }
 
-    if (this.currentEditId) {
-        // Update existing question (editing mode)
-        const questionIndex = this.questions.findIndex(q => q.id === this.currentEditId);
-        if (questionIndex !== -1) {
-            this.questions[questionIndex] = {
-                id: this.currentEditId,
-                question: questionText.trim(),
-                lesson: lesson,
-                marks: marks
-            };
-        }
-        this.cancelEdit();
-        this.clearForm();
-        this.updateUI();
-        this.showSuccessMessage('Question updated successfully!');
-    } else {
-        // Add multiple questions (bulk mode)
-        const questionLines = questionText.split(/\r?\n/);
-        const validQuestions = [];
-        
-        questionLines.forEach(line => {
-            const cleanQuestion = line.trim();
-            if (cleanQuestion && cleanQuestion.length > 0) {
-                validQuestions.push(cleanQuestion);
-            }
+    // Split by line breaks and filter empty lines
+    const questions = questionText.split('\n').filter(q => q.trim() !== '');
+    
+    questions.forEach(q => {
+        this.questions.push({
+            id: this.nextId++,
+            question: q.trim(),
+            lesson: lesson,
+            marks: marks
         });
+    });
 
-        if (validQuestions.length === 0) {
-            alert('Please enter at least one valid question');
-            return;
-        }
-
-        // Add each question
-        validQuestions.forEach(questionLine => {
-            const newQuestion = {
-                id: this.nextId++,
-                question: questionLine,
-                lesson: lesson,
-                marks: marks
-            };
-            this.questions.push(newQuestion);
-        });
-
-        this.clearForm();
-        this.updateUI();
-        this.showSuccessMessage(`${validQuestions.length} question(s) added successfully!`);
-    }
+    this.clearForm();
+    this.updateUI();
+    this.showSuccessMessage(`${questions.length} questions added!`);
 }
+
 
     addNewLesson() {
         const lessonName = document.getElementById('newLessonName').value.trim();
