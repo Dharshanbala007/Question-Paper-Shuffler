@@ -125,42 +125,50 @@ class QuestionPaperShuffler {
     }
 
     handleQuestionSubmit() {
-        const lesson = document.getElementById('lesson').value;
-        const marks = parseInt(document.getElementById('marks').value);
-        const questionText = document.getElementById('questionText').value.trim();
+    const lesson = document.getElementById('lesson').value;
+    const marks = parseInt(document.getElementById('marks').value);
+    const questionText = document.getElementById('questionText').value.trim();
 
-        if (!lesson || !marks || !questionText) {
-            alert('Please fill in all fields');
-            return;
+    if (!lesson || !marks || !questionText) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    if (this.currentEditId) {
+        // Update existing question
+        const questionIndex = this.questions.findIndex(q => q.id === this.currentEditId);
+        if (questionIndex !== -1) {
+            this.questions[questionIndex] = {
+                id: this.currentEditId,
+                question: questionText.split('\n')[0].trim(), // Take first line only for editing
+                lesson: lesson,
+                marks: marks
+            };
         }
+        this.cancelEdit();
+    } else {
+        // Add multiple questions (split by new lines)
+        const questionList = questionText.split('\n')
+            .map(q => q.trim())
+            .filter(q => q.length > 0);
 
-        if (this.currentEditId) {
-            // Update existing question
-            const questionIndex = this.questions.findIndex(q => q.id === this.currentEditId);
-            if (questionIndex !== -1) {
-                this.questions[questionIndex] = {
-                    id: this.currentEditId,
-                    question: questionText,
-                    lesson: lesson,
-                    marks: marks
-                };
-            }
-            this.cancelEdit();
-        } else {
-            // Add new question
+        questionList.forEach(q => {
             const newQuestion = {
                 id: this.nextId++,
-                question: questionText,
+                question: q,
                 lesson: lesson,
                 marks: marks
             };
             this.questions.push(newQuestion);
-        }
-
-        this.clearForm();
-        this.updateUI();
-        this.showSuccessMessage(this.currentEditId ? 'Question updated successfully!' : 'Question added successfully!');
+        });
     }
+
+    this.clearForm();
+    this.updateUI();
+    
+    const count = this.currentEditId ? 1 : questionText.split('\n').filter(q => q.trim().length > 0).length;
+    this.showSuccessMessage(`${count} question(s) added successfully!`);
+}
 
     addNewLesson() {
         const lessonName = document.getElementById('newLessonName').value.trim();
