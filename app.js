@@ -14,10 +14,10 @@ class QuestionPaperShuffler {
     initializeApp() {
         // Initialize default lessons
         // Load lessons from localStorage if available, else use empty
-const savedLessons = localStorage.getItem('questionShufflerLessons');
-this.lessons = savedLessons ? JSON.parse(savedLessons) : [];
-this.populateLessonDropdowns();
-this.updateUI();
+        const savedLessons = localStorage.getItem('questionShufflerLessons');
+        this.lessons = savedLessons ? JSON.parse(savedLessons) : [];
+        this.populateLessonDropdowns();
+        this.updateUI();
 
         this.populateLessonDropdowns();
         this.updateUI();
@@ -127,7 +127,6 @@ this.updateUI();
         this.lessons.push(lessonName);
         // Save lessons to localStorage
         localStorage.setItem('questionShufflerLessons', JSON.stringify(this.lessons));
-
         this.populateLessonDropdowns();
         document.getElementById('newLessonName').value = '';
         this.updateUI();
