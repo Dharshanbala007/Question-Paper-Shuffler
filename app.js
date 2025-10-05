@@ -13,54 +13,13 @@ class QuestionPaperShuffler {
 
     initializeApp() {
         // Initialize default lessons
-        this.lessons = ["Cell Biology", "Plant Biology", "Ecology", "Genetics", "Evolution"];
+        // Load lessons from localStorage if available, else use empty
+const savedLessons = localStorage.getItem('questionShufflerLessons');
+this.lessons = savedLessons ? JSON.parse(savedLessons) : [];
+this.populateLessonDropdowns();
+this.updateUI();
+
         this.populateLessonDropdowns();
-        this.updateUI();
-    }
-
-    loadSampleData() {
-        // Load sample questions from provided data
-        const sampleQuestions = [
-            {
-                id: 1,
-                question: "What is the basic unit of life?",
-                lesson: "Cell Biology",
-                marks: 2
-            },
-            {
-                id: 2,
-                question: "Explain the process of photosynthesis in detail.",
-                lesson: "Plant Biology",
-                marks: 16
-            },
-            {
-                id: 3,
-                question: "Define ecosystem and its components.",
-                lesson: "Ecology",
-                marks: 4
-            },
-            {
-                id: 4,
-                question: "What are the functions of mitochondria?",
-                lesson: "Cell Biology",
-                marks: 4
-            },
-            {
-                id: 5,
-                question: "Name two types of cells.",
-                lesson: "Cell Biology",
-                marks: 2
-            },
-            {
-                id: 6,
-                question: "Describe the nitrogen cycle with a diagram.",
-                lesson: "Ecology",
-                marks: 16
-            }
-        ];
-
-        this.questions = sampleQuestions;
-        this.nextId = Math.max(...sampleQuestions.map(q => q.id)) + 1;
         this.updateUI();
     }
 
@@ -166,6 +125,9 @@ class QuestionPaperShuffler {
         }
 
         this.lessons.push(lessonName);
+        // Save lessons to localStorage
+        localStorage.setItem('questionShufflerLessons', JSON.stringify(this.lessons));
+
         this.populateLessonDropdowns();
         document.getElementById('newLessonName').value = '';
         this.updateUI();
