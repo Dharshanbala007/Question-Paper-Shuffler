@@ -1,4 +1,4 @@
-// Question Paper Shuffler Application
+// Question Paper Shuffler Application - Updated Version (No Sample Data + Persistent Lessons)
 class QuestionPaperShuffler {
     constructor() {
         this.questions = [];
@@ -8,21 +8,28 @@ class QuestionPaperShuffler {
         
         this.initializeApp();
         this.bindEvents();
-        this.loadSampleData();
+        // Removed this.loadSampleData(); - No more sample data!
     }
 
     initializeApp() {
-    // Load lessons from localStorage if available, else use empty array
-    const savedLessons = localStorage.getItem('questionShufflerLessons');
-    this.lessons = savedLessons ? JSON.parse(savedLessons) : [];
-    
-    // Start with empty questions
-    this.questions = [];
-    this.nextId = 1;
-    
-    this.populateLessonDropdowns();
-    this.updateUI();
-}
+        // Load lessons from localStorage if available, else use empty array
+        const savedLessons = localStorage.getItem('questionShufflerLessons');
+        this.lessons = savedLessons ? JSON.parse(savedLessons) : [];
+        
+        // Start with empty questions - no sample data
+        this.questions = [];
+        this.nextId = 1;
+        
+        this.populateLessonDropdowns();
+        this.updateUI();
+    }
+
+    loadSampleData() {
+        // No sample data - start completely empty
+        this.questions = [];
+        this.nextId = 1;
+        this.updateUI();
+    }
 
     bindEvents() {
         // Form submission
@@ -84,33 +91,64 @@ class QuestionPaperShuffler {
         });
     }
 
-   handleQuestionSubmit() {
-    const lesson = document.getElementById('lesson').value;
-    const marks = parseInt(document.getElementById('marks').value);
-    const questionText = document.getElementById('questionText').value;
+    handleQuestionSubmit() {
+        const lesson = document.getElementById('lesson').value;
+        const marks = parseInt(document.getElementById('marks').value);
+        const questionText = document.getElementById('questionText').value;
 
-    if (!lesson || !marks || !questionText) {
-        alert('Please fill in all fields');
-        return;
+        if (!lesson || !marks || !questionText.trim()) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        if (this.currentEditId) {
+            // Update existing question (editing mode)
+            const questionIndex = this.questions.findIndex(q => q.id === this.currentEditId);
+            if (questionIndex !== -1) {
+                this.questions[questionIndex] = {
+                    id: this.currentEditId,
+                    question: questionText.trim(),
+                    lesson: lesson,
+                    marks: marks
+                };
+            }
+            this.cancelEdit();
+            this.clearForm();
+            this.updateUI();
+            this.showSuccessMessage('Question updated successfully!');
+        } else {
+            // Add multiple questions (bulk mode)
+            const questionLines = questionText.split(/\r?\n/);
+            const validQuestions = [];
+            
+            questionLines.forEach(line => {
+                const cleanQuestion = line.trim();
+                if (cleanQuestion && cleanQuestion.length > 0) {
+                    validQuestions.push(cleanQuestion);
+                }
+            });
+
+            if (validQuestions.length === 0) {
+                alert('Please enter at least one valid question');
+                return;
+            }
+
+            // Add each question
+            validQuestions.forEach(questionLine => {
+                const newQuestion = {
+                    id: this.nextId++,
+                    question: questionLine,
+                    lesson: lesson,
+                    marks: marks
+                };
+                this.questions.push(newQuestion);
+            });
+
+            this.clearForm();
+            this.updateUI();
+            this.showSuccessMessage(`${validQuestions.length} question(s) added successfully!`);
+        }
     }
-
-    // Split by line breaks and filter empty lines
-    const questions = questionText.split('\n').filter(q => q.trim() !== '');
-    
-    questions.forEach(q => {
-        this.questions.push({
-            id: this.nextId++,
-            question: q.trim(),
-            lesson: lesson,
-            marks: marks
-        });
-    });
-
-    this.clearForm();
-    this.updateUI();
-    this.showSuccessMessage(`${questions.length} questions added!`);
-}
-
 
     addNewLesson() {
         const lessonName = document.getElementById('newLessonName').value.trim();
@@ -126,8 +164,10 @@ class QuestionPaperShuffler {
         }
 
         this.lessons.push(lessonName);
-        // Save lessons to localStorage
+        
+        // Save lessons to localStorage - THIS MAKES LESSONS PERSISTENT!
         localStorage.setItem('questionShufflerLessons', JSON.stringify(this.lessons));
+        
         this.populateLessonDropdowns();
         document.getElementById('newLessonName').value = '';
         this.updateUI();
