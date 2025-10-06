@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Question Paper Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="main-header">
+            <h1>Professional Question Paper Generator</h1>
+            <p class="subtitle">AI-Powered College Question Papers with Automatic Learning Level Detection</p>
+        </header>
+
+        <!-- College Information Setup -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">🏛️</span>
+                College Information Setup
+            </h2>
+            <form id="collegeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collegeName">College Name:</label>
+                        <input type="text" id="collegeName" placeholder="e.g., ANNA UNIVERSITY" class="form-control glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="collegeLocation">Location:</label>
+                        <input type="text" id="collegeLocation" placeholder="e.g., Chennai - 600 025" class="form-control glass-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <input type="text" id="department" placeholder="e.g., COMPUTER SCIENCE AND ENGINEERING" class="form-control glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="examType">Exam Type:</label>
+                        <select id="examType" class="form-control glass-input">
+                            <option value="INTERNAL EXAMINATION - I">INTERNAL EXAMINATION - I</option>
+                            <option value="INTERNAL EXAMINATION - II">INTERNAL EXAMINATION - II</option>
+                            <option value="INTERNAL EXAMINATION - III">INTERNAL EXAMINATION - III</option>
+                            <option value="INTERNAL EXAMINATION - IV">INTERNAL EXAMINATION - IV</option>
+                            <option value="INTERNAL EXAMINATION - V">INTERNAL EXAMINATION - V</option>
+                            <option value="INTERNAL EXAMINATION - VI">INTERNAL EXAMINATION - VI</option>
+                            <option value="INTERNAL EXAMINATION - VII">INTERNAL EXAMINATION - VII</option>
+                            <option value="INTERNAL EXAMINATION - VIII">INTERNAL EXAMINATION - VIII</option>
+                            <option value="SEMESTER EXAMINATION">SEMESTER EXAMINATION</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" id="saveCollegeInfo" class="btn btn-primary glass-btn">
+                    <span class="icon">💾</span>
+                    <span class="btn-text">Save College Information</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Subject Information -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">📚</span>
+                Subject Information
+            </h2>
+            <form id="subjectForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="subjectCode">Subject Code:</label>
+                        <input type="text" id="subjectCode" placeholder="e.g., CS6502" class="form-control glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name:</label>
+                        <input type="text" id="subjectName" placeholder="e.g., OBJECT ORIENTED ANALYSIS AND DESIGN" class="form-control glass-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="yearSemBranch">Year/Sem./Branch:</label>
+                        <input type="text" id="yearSemBranch" placeholder="e.g., III/VI/CSE" class="form-control glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration:</label>
+                        <input type="text" id="duration" value="3 Hrs" class="form-control glass-input">
+                    </div>
+                </div>
+                <button type="button" id="saveSubjectInfo" class="btn btn-primary glass-btn">
+                    <span class="icon">💾</span>
+                    <span class="btn-text">Save Subject Information</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Course Outcomes Management -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">🎯</span>
+                Add New Course Outcome
+            </h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="newLessonName">Course Outcome Name:</label>
+                    <input type="text" id="newLessonName" placeholder="e.g., CO1: Introduction to OOAD" class="form-control glass-input">
+                </div>
+                <div class="form-group">
+                    <div class="lesson-actions">
+                        <button id="addLessonBtn" class="btn btn-success glass-btn">
+                            <span class="icon">➕</span>
+                            Add Course Outcome
+                        </button>
+                        <button id="clearAllLessonsBtn" class="btn btn-danger glass-btn">
+                            <span class="icon">🗑️</span>
+                            Clear All Course Outcomes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">📊</span>
+                Question Bank Statistics
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-number" id="count2mark">0</div>
+                    <div class="stat-label">2 Mark Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-number" id="count4mark">0</div>
+                    <div class="stat-label">4 Mark Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-number" id="count8mark">0</div>
+                    <div class="stat-label">8 Mark Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">📑</div>
+                    <div class="stat-number" id="count13mark">0</div>
+                    <div class="stat-label">13 Mark Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">📃</div>
+                    <div class="stat-number" id="count15mark">0</div>
+                    <div class="stat-label">15 Mark Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">💎</div>
+                    <div class="stat-number" id="count16mark">0</div>
+                    <div class="stat-label">16 Mark Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-number" id="countTotal">0</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-card glass-stat">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" id="lessonsCount">0</div>
+                    <div class="stat-label">Course Outcomes</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add New Question -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">➕</span>
+                Add New Question
+            </h2>
+            <form id="questionForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lesson">Course Outcome:</label>
+                        <select id="lesson" class="form-control glass-input" required>
+                            <option value="">Select Course Outcome</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="marks">Question Marks:</label>
+                        <select id="marks" class="form-control glass-input" required>
+                            <option value="">Select Marks</option>
+                            <option value="2">2 Marks</option>
+                            <option value="4">4 Marks</option>
+                            <option value="8">8 Marks</option>
+                            <option value="13">13 Marks</option>
+                            <option value="14">14 Marks</option>
+                            <option value="15">15 Marks</option>
+                            <option value="16">16 Marks</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="isOrType">Question Type:</label>
+                        <select id="isOrType" class="form-control glass-input">
+                            <option value="false">Regular Question</option>
+                            <option value="true">OR Type Question</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="questionText">Question Text (One per line for bulk upload):</label>
+                    <textarea id="questionText" rows="6" placeholder="Enter your question here. For multiple questions, put each on a new line." class="form-control glass-textarea" required></textarea>
+                </div>
+
+                <!-- AI Detection Display -->
+                <div class="ai-detection-box">
+                    <div class="detection-info">
+                        <div class="detected-level" id="detectedLevel">AI will auto-detect</div>
+                    </div>
+                    <div class="ai-icon">🤖</div>
+                </div>
+
+                <!-- Learning Levels Guide -->
+                <div class="learning-levels-guide">
+                    <span class="level-badge l1">L1 - Remember</span>
+                    <span class="level-badge l2">L2 - Understand</span>
+                    <span class="level-badge l3">L3 - Apply</span>
+                    <span class="level-badge l4">L4 - Analyze</span>
+                    <span class="level-badge l5">L5 - Evaluate</span>
+                    <span class="level-badge l6">L6 - Create</span>
+                </div>
+
+                <div class="form-row">
+                    <button type="submit" class="btn btn-success btn-large glass-btn">
+                        <span class="icon">🤖</span>
+                        <span class="btn-text">Add Question(s) with AI Detection</span>
+                    </button>
+                    <button type="button" id="cancelEdit" class="btn btn-secondary glass-btn" style="display: none;">
+                        <span class="icon">❌</span>
+                        <span class="btn-text">Cancel Edit</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Course Outcome Selection -->
+        <section class="card glass-card" id="coSelectionSection">
+            <h2 class="section-title">
+                <span class="icon">🎯</span>
+                Course Outcome Selection
+            </h2>
+            <p class="section-description">Select how many questions you want from each Course Outcome:</p>
+            <div id="coSelectionContainer">
+                <!-- CO selection will be populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Generate Paper -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">📋</span>
+                Generate Question Paper
+            </h2>
+            <form id="generateForm">
+                <div class="paper-config">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="examDate">Date & Session:</label>
+                            <input type="text" id="examDate" placeholder="e.g., 12.06.2024 & AN" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxMarks">Max. Marks:</label>
+                            <input type="number" id="maxMarks" value="100" min="1" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <!-- Empty space for alignment -->
+                        </div>
+                    </div>
+                    
+                    <h3>Question Distribution (Legacy Mode):</h3>
+                    
+                    <!-- First Row: 2, 4, 8 marks -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="num2mark">2 Mark Questions:</label>
+                            <input type="number" id="num2mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="num4mark">4 Mark Questions:</label>
+                            <input type="number" id="num4mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="num8mark">8 Mark Questions:</label>
+                            <input type="number" id="num8mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Second Row: 13, 14, 15 marks -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="num13mark">13 Mark Questions:</label>
+                            <input type="number" id="num13mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="num14mark">14 Mark Questions:</label>
+                            <input type="number" id="num14mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="num15mark">15 Mark Questions:</label>
+                            <input type="number" id="num15mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Third Row: 16 marks and OR Questions -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="num16mark">16 Mark Questions:</label>
+                            <input type="number" id="num16mark" min="0" value="0" class="form-control glass-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="includeOrQuestions">Include OR Questions:</label>
+                            <select id="includeOrQuestions" class="form-control glass-input">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <!-- Empty space for alignment -->
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-large glass-btn generate-btn">
+                    <span class="icon">🎨</span>
+                    Generate Professional Question Paper
+                </button>
+            </form>
+        </section>
+
+        <!-- Question Bank -->
+        <section class="card glass-card">
+            <h2 class="section-title">
+                <span class="icon">🏦</span>
+                Question Bank
+            </h2>
+            <div class="glass-info">
+                <span class="icon">💡</span>
+                <span>Questions are automatically organized by Course Outcome and Marks. AI detects learning levels individually for each question.</span>
+            </div>
+            <div class="question-bank-content glass-content" id="questionBankContent">
+                <div class="empty-state">
+                    <span class="empty-icon">📝</span>
+                    <p>No questions added yet. Add some questions to get started!</p>
+                </div>
+            </div>
+            <div class="form-row" style="margin-top: 1rem;">
+                <button id="clearAllBtn" class="btn btn-danger glass-btn">
+                    <span class="icon">🗑️</span>
+                    <span class="btn-text">Clear All Questions</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Generated Paper Section (Initially Hidden) -->
+        <section class="card glass-card" id="generatedPaperSection" style="display: none;">
+            <div class="paper-header">
+                <h2 class="section-title">
+                    <span class="icon">📄</span>
+                    Generated Question Paper
+                </h2>
+                <div class="paper-actions">
+                    <button id="printPaperBtn" class="btn btn-primary glass-btn">
+                        <span class="icon">🖨️</span>
+                        <span class="btn-text">Print Paper</span>
+                    </button>
+                    <button id="regenerateBtn" class="btn btn-secondary glass-btn">
+                        <span class="icon">🔄</span>
+                        <span class="btn-text">Regenerate</span>
+                    </button>
+                </div>
+            </div>
+            <div class="generated-paper" id="generatedPaperContent">
+                <!-- Generated paper content will be inserted here -->
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
